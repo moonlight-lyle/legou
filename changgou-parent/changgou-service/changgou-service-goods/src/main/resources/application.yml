@@ -17,3 +17,6 @@ eureka:
 feign:
   hystrix:
     enabled: true
+# 日志级别
+#logging:
+#  level.com: debug

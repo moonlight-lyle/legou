@@ -14,6 +14,7 @@
     <description>统一管理所有微服务的聚合工程</description>
     <modules>
         <module>changgou-service-goods</module>
+        <module>changgou-service-file</module>
     </modules>
 
 

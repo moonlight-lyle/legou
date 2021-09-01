@@ -2,6 +2,7 @@ package com.changgou.goods.controller;
 
 import com.changgou.goods.pojo.Brand;
 import com.changgou.goods.service.BrandService;
+import com.github.pagehelper.PageInfo;
 import entity.Result;
 import entity.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,5 +82,34 @@ public class BrandController {
     public Result<List<Brand>> search(@RequestBody Brand brand){
         List<Brand> brandList=brandService.findList(brand);
         return new Result<List<Brand>>(true, StatusCode.OK,"条件搜索列表成功",brandList);
+    }
+
+    /**
+     * 分页查询（无搜索条件）
+     * @param page 当前页码
+     * @param size 每页展示多少行数据
+     * @return
+     */
+    @GetMapping("/search/{page}/{size}")
+    public Result<PageInfo<Brand>> findPage(@PathVariable(name = "page") Integer page,
+                                            @PathVariable(name = "size") Integer size){
+        PageInfo<Brand> pageInfo=brandService.findPage(page,size);
+        return new Result<PageInfo<Brand>>(true, StatusCode.OK,"分页查询成功",pageInfo);
+    }
+
+    /**
+     * 有条件的分页查询
+     * @param brand 接收条件搜索
+     * @param page 当前页码
+     * @param size 每页展示多少行数据
+     * @return
+     */
+    @PostMapping("/search/{page}/{size}")
+    public Result<PageInfo<Brand>> findPage(@RequestBody Brand brand,
+                                            @PathVariable(name = "page") Integer page,
+                                            @PathVariable(name = "size") Integer size){
+        PageInfo<Brand> pageInfo=brandService.findPage(brand,page,size);
+        int i=1/0;
+        return new Result<PageInfo<Brand>>(true, StatusCode.OK,"分页查询成功",pageInfo);
     }
 }
