@@ -3,7 +3,7 @@
   "info": {
     "description": "微服务工程代码生成器,生成Dao、Service、Controller、Pojo、Feign、Swagger的JSON脚本",
     "version": "1.0.0",
-    "title": "深圳黑马训练营代码生成器",
+    "title": "深圳代码生成器",
     "termsOfService": "https://github.com/shenkunlin/code-template.git",
     "contact": {
       "email": "shenkunlin@itcast.cn"
@@ -197,7 +197,7 @@
     </#list>
   },
   "externalDocs": {
-    "description": "黑马训练营畅购微服务商城(http://www.itheima.com)",
+    "description": "畅购微服务商城(http://www.it.com)",
     "url": "https://github.com/shenkunlin/code-template.git"
   }
 }

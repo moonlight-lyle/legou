@@ -1,4 +1,4 @@
-package com.itheima;
+package com.it;
 
 import com.itheima.code.build.TemplateBuilder;
 
