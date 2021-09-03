@@ -81,6 +81,7 @@ public class Spu implements Serializable{
 
 
 
+
 	//get方法
 	public Long getId() {
 		return id;

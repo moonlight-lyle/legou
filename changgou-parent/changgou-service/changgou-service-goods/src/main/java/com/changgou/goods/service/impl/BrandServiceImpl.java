@@ -111,4 +111,9 @@ public class BrandServiceImpl implements BrandService {
         return new PageInfo<Brand>(brands);
     }
 
+    @Override
+    public List<Brand> findByCategory(Integer categoryId) {
+        return brandMapper.findByCategory(categoryId);
+    }
+
 }

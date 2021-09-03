@@ -1,4 +1,5 @@
 package com.changgou.goods.controller;
+import com.changgou.goods.pojo.Goods;
 import com.changgou.goods.pojo.Spu;
 import com.changgou.goods.service.SpuService;
 import com.github.pagehelper.PageInfo;
@@ -122,5 +123,27 @@ public class SpuController {
         //调用SpuService实现查询所有Spu
         List<Spu> list = spuService.findAll();
         return new Result<List<Spu>>(true, StatusCode.OK,"查询成功",list) ;
+    }
+
+    /**
+     * 商品的保存
+     * @param goods
+     * @return
+     */
+    @PostMapping("/save")
+    public Result saveGoods(@RequestBody Goods goods){
+        spuService.saveGoods(goods);
+        return new Result(true, StatusCode.OK,"保存成功");
+    }
+
+    /**
+     * 根据spuId查询商品
+     * @param id
+     * @return
+     */
+    @GetMapping("/goods/{id}")
+    public Result<Goods> findGoodsById(@PathVariable Long id){
+        Goods goods=spuService.findGoodsById(id);
+        return new Result<>(true, StatusCode.OK,"查询成功",goods);
     }
 }

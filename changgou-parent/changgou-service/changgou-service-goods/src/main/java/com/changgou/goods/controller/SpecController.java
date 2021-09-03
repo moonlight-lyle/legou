@@ -123,4 +123,15 @@ public class SpecController {
         List<Spec> list = specService.findAll();
         return new Result<List<Spec>>(true, StatusCode.OK,"查询成功",list) ;
     }
+
+    /**
+     * 根据前端传递过来的分类id查询模板id从而获取规格列表
+     * @param categoryid 分类ID(三级)
+     * @return
+     */
+    @GetMapping(value = "/category/{id}")
+    public Result<List<Spec>> findByCategoryId(@PathVariable(value = "id") Integer categoryid){
+        List<Spec> list = specService.findByCategoryId(categoryid);
+        return new Result<>(true,StatusCode.OK,"查询规格列表成功",list);
+    }
 }

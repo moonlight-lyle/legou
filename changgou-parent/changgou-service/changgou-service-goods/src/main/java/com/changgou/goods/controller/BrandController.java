@@ -112,4 +112,16 @@ public class BrandController {
         int i=1/0;
         return new Result<PageInfo<Brand>>(true, StatusCode.OK,"分页查询成功",pageInfo);
     }
+
+    /**
+     * 根据前端传递的分类id查询品牌分类
+     * select tbb.* from tb_brand tbb,tb_category_brand tbc where tbb.id=tbc.brand_id and tbc.category_id=76;
+     * @param categoryId
+     * @return
+     */
+    @GetMapping("/category/{id}")
+    public Result<List<Brand>> findBrandByCategory(@PathVariable(name = "id") Integer categoryId){ // @PathVariable(name = "id")中name指定的名称要和 @GetMapping("/category/{id}")中的一致
+        List<Brand> categoryList = brandService.findByCategory(categoryId);
+        return new Result<List<Brand>>(true,StatusCode.OK,"查询成功！",categoryList);
+    }
 }

@@ -144,4 +144,9 @@ public class SpecServiceImpl implements SpecService {
     public List<Spec> findAll() {
         return specMapper.selectAll();
     }
+
+    @Override
+    public List<Spec> findByCategoryId(Integer categoryid) {
+        return specMapper.findByCategoryId(categoryid);
+    }
 }

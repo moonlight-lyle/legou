@@ -63,4 +63,6 @@ public interface CategoryService {
      * @return
      */
     List<Category> findAll();
+
+    List<Category> findByParentId(Integer pid);
 }

@@ -1,4 +1,5 @@
 package com.changgou.goods.service;
+import com.changgou.goods.pojo.Goods;
 import com.changgou.goods.pojo.Spu;
 import com.github.pagehelper.PageInfo;
 import java.util.List;
@@ -63,4 +64,8 @@ public interface SpuService {
      * @return
      */
     List<Spu> findAll();
+
+    void saveGoods(Goods goods);
+
+    Goods findGoodsById(Long id);
 }

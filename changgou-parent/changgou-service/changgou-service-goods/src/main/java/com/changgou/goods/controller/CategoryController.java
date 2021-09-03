@@ -123,4 +123,15 @@ public class CategoryController {
         List<Category> list = categoryService.findAll();
         return new Result<List<Category>>(true, StatusCode.OK,"查询成功",list) ;
     }
+
+    /**
+     * 根据前端点击传过来的id查询其下的子类，一级分类pid=0
+     * @param pid 页面传递过来的ID值作为parent_id
+     * @return
+     */
+    @GetMapping("/list/{pid}")
+    public Result<List<Category>> findByParentId(@PathVariable(name = "pid") Integer pid){
+        List<Category> categories = categoryService.findByParentId(pid);
+        return new Result<List<Category>>(true,StatusCode.OK,"查询成功！",categories);
+    }
 }

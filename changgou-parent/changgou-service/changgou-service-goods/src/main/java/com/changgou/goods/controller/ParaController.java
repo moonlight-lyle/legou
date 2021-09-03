@@ -123,4 +123,15 @@ public class ParaController {
         List<Para> list = paraService.findAll();
         return new Result<List<Para>>(true, StatusCode.OK,"查询成功",list) ;
     }
+
+    /**
+     * 根据商品分类id查询模板id从而查询参数列表信息
+     * @param categoryId
+     * @return
+     */
+    @GetMapping(value = "/category/{id}")
+    public Result<List<Para>> getByCategoryId(@PathVariable(value = "id") Integer categoryId){
+        List<Para> list = paraService.getByCategoryId(categoryId);
+        return new Result<List<Para>>(true, StatusCode.OK,"查询参数列表成功",list) ;
+    }
 }

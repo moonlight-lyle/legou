@@ -144,4 +144,9 @@ public class ParaServiceImpl implements ParaService {
     public List<Para> findAll() {
         return paraMapper.selectAll();
     }
+
+    @Override
+    public List<Para> getByCategoryId(Integer categoryId) {
+        return paraMapper.getByCategoryId(categoryId);
+    }
 }

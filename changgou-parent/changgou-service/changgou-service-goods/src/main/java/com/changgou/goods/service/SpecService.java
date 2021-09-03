@@ -63,4 +63,6 @@ public interface SpecService {
      * @return
      */
     List<Spec> findAll();
+
+    List<Spec> findByCategoryId(Integer categoryid);
 }

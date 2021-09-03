@@ -1,14 +1,24 @@
 package com.changgou.goods.service.impl;
+import com.alibaba.fastjson.JSON;
+import com.changgou.goods.dao.BrandMapper;
+import com.changgou.goods.dao.CategoryMapper;
+import com.changgou.goods.dao.SkuMapper;
 import com.changgou.goods.dao.SpuMapper;
-import com.changgou.goods.pojo.Spu;
+import com.changgou.goods.pojo.*;
 import com.changgou.goods.service.SpuService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import entity.IdWorker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
+
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
 /****
  * @Author:admin
  * @Description:Spu业务层接口实现类
@@ -17,8 +27,20 @@ import java.util.List;
 @Service
 public class SpuServiceImpl implements SpuService {
 
-    @Autowired
+    @Autowired(required = false)
     private SpuMapper spuMapper;
+
+    @Autowired(required = false)
+    private SkuMapper skuMapper;
+
+    @Autowired(required = false)
+    private CategoryMapper categoryMapper;
+
+    @Autowired(required = false)
+    private BrandMapper brandMapper;
+
+    @Autowired
+    private IdWorker idWorker;
 
 
     /**
@@ -211,5 +233,83 @@ public class SpuServiceImpl implements SpuService {
     @Override
     public List<Spu> findAll() {
         return spuMapper.selectAll();
+    }
+
+    @Override
+    public void saveGoods(Goods goods) {
+
+        // 1.获取SPU数据插入到SPU表中
+        Spu spu = goods.getSpu();
+        // 如果有id说明是更新，否则是添加
+        if (spu.getId()!=null){
+            spuMapper.updateByPrimaryKeySelective(spu);
+            // 先删除原来的Sku列表再重新新增，这样可以保持数据最新
+            Sku condition=new Sku();
+            condition.setSpuId(spu.getId());
+            skuMapper.delete(condition);
+        }else {
+            // 设置主键
+            long spuId = idWorker.nextId();
+            spu.setId(spuId);
+            spuMapper.insertSelective(spu);
+        }
+        // 查询分类名称
+        Category category = categoryMapper.selectByPrimaryKey(spu.getCategory3Id());
+        // 查询品牌
+        Brand brand = brandMapper.selectByPrimaryKey(spu.getBrandId());
+        // 2.获取SKU数据插入到SKU表中
+        List<Sku> skuList = goods.getSkuList();
+        if (!CollectionUtils.isEmpty(skuList)){
+            for (Sku sku : skuList) {
+                // 设置主键
+                long skuId = idWorker.nextId();
+                sku.setId(skuId);
+                // 设置商品sku名称：spu名称+空格+规格值+空格+规格值
+                String spuName = spu.getName(); // spu名称
+                String spec = sku.getSpec(); // 规格spe，json数据 //{"电视音响效果":"立体声","电视屏幕尺寸":"20英寸","尺码":"165"}
+                // FastJson转换
+                Map<String,String> map = JSON.parseObject(spec, Map.class);
+                StringBuilder sb=new StringBuilder();
+                sb.append(spuName);
+                if (!CollectionUtils.isEmpty(map)){
+                    for (String key : map.keySet()) {
+                        sb.append(" ").append(map.get(key));
+                    }
+                }
+                // 设置sku名称
+                sku.setName(sb.toString());
+                // 设置时间
+                sku.setCreateTime(new Date());
+                sku.setUpdateTime(new Date());
+                // 设置spuId
+                sku.setSpuId(spu.getId());
+                // 设置分类id
+                sku.setCategoryId(spu.getCategory3Id());
+                // 设置分类名称
+                sku.setCategoryName(category.getName());
+                // 设置品牌
+                sku.setBrandName(brand.getName());
+                // 设置状态
+                sku.setStatus("1"); // 正常状态
+                skuMapper.insertSelective(sku);
+            }
+        }
+
+
+    }
+
+    @Override
+    public Goods findGoodsById(Long id) {
+        // 根据id查询spu数据
+        Spu spu = spuMapper.selectByPrimaryKey(id);
+        // 根据id查询其下的sku数据
+        Sku condition=new Sku();
+        condition.setSpuId(id);
+        List<Sku> skuList = skuMapper.select(condition);
+        // 组合数据进行返回
+        Goods goods=new Goods();
+        goods.setSpu(spu);
+        goods.setSkuList(skuList);
+        return goods;
     }
 }
