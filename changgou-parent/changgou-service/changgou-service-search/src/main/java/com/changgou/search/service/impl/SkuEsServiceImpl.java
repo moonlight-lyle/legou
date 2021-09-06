@@ -176,6 +176,9 @@ public class SkuEsServiceImpl implements SkuEsService {
         //设置规格的列表数据
         resultMap.put("specMap", specMap);//{"规格名":["具体的选项值1",""具体的选项值2]}
 
+        resultMap.put("pageNum",pageNum);//当前页码
+        resultMap.put("pageSize",pageSize);//当前页记录行数
+
         return resultMap;
     }
 

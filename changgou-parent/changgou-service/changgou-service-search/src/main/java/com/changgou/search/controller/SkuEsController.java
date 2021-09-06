@@ -30,8 +30,13 @@ public class SkuEsController {
      * @param searchMap：参数Map
      * @return 后台返回的数据也很多：分页信息，品牌、规格、分类以及列表数据等等，可以使用Map作为返回值
      */
-    @PostMapping
-    public Map search(@RequestBody(required = false) Map<String,String> searchMap){
+//    @PostMapping
+//    public Map search(@RequestBody(required = false) Map<String,String> searchMap){
+//        return  skuService.search(searchMap);
+//    }
+
+    @GetMapping
+    public Map search(@RequestParam(required = false) Map<String,String> searchMap){
         return  skuService.search(searchMap);
     }
 }

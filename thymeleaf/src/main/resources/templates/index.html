@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thymeleaf入门</title>
+</head>
+<br>
+<!--获取普通字符串值-->
+<h1>欢迎来到首页：<span th:text="${message}"></span></h1>
+<!--获取pojo属性值-->
+<h1>用户的信息：
+    用户名：<span th:text="${person.name}"></span>
+    id:<span th:text="${person.id}"></span>
+</h1>
+<!--获取list并遍历-->
+<table>
+    <tr>
+        <td>id</td>
+        <td>name</td>
+        <td>index</td>
+    </tr>
+    <tr th:each="person:${myList}">
+        <td th:text="${person.id}"></td>
+        <td th:text="${person.name}"></td>
+        <td th:text="${personStat.index}"></td>
+    </tr>
+</table>
+</br>
+<!--获取map并遍历-->
+<div>
+    <div th:each="entry:${myMap}">
+        <span th:text="${entry.key}"></span>
+        <span th:text="${entry.value}"></span>
+    </div>
+</div>
+<!--超链接及参数拼接-->
+<a th:href="@{/test/index(age=${age})}">去看首页</a>
+</br>
+<a th:href="@{/test/index(age=${age},name=${name})}">去看首页</a>
+<br/>
+<!--日期格式化-->
+日期要格式化：<span th:text="${#dates.format(date,'yyyy-MM-dd HH:mm:ss')}"></span>
+<!--if else表达式-->
+<div>
+    <div th:if="${age}>18">显示值1</div>
+    <div>显示值2</div>
+</div>
+<!--使用javascript函数-->
+<button onclick="login()">点我一定要点我</button>
+</body>
+<script th:inline="javascript">
+    var name = [[${name}]];
+    var login = function () {
+        alert("哈哈哈," + name + "登录成功了")
+    }
+</script>
+</html>
