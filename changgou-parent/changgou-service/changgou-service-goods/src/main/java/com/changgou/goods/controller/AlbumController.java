@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/album")
-@CrossOrigin
+@CrossOrigin // 跨域注解，使用该注解开启支持跨域
 public class AlbumController {
 
     @Autowired

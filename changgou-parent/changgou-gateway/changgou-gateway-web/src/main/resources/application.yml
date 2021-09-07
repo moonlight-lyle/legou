@@ -1,0 +1,59 @@
+spring:
+  application:
+    name: gateway-web
+  # 跨域配置
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]': # 匹配所有请求
+            allowedOrigins: "*" #跨域处理 允许所有的域
+            allowedMethods: # 支持的方法
+              - GET
+              - POST
+              - PUT
+              - DELETE
+      routes:
+        - id: host_route # 唯一标识，规则的名字
+#          uri: http://localhost:18081 # 转发到的服务器地址
+          uri: lb://goods # 使用负载均衡策略，转发到的服务器地址
+          predicates:
+#          - Host=www.baidu.com** # 设置要转发的条件，只要是www.baidu.com开头的都符合条件
+#          - Path=/brand** # 设置要转发的条件，只要是以'/brand'开头的请求，都转发给http://localhost:18081进行处理
+#          - Path=/** # 设置要转发的条件，任何请求
+#          - Path=/brand # 设置要转发的条件，任何请求
+            - Path=/api/album/**,/api/brand/**,/api/cache/**,/api/categoryBrand/**,/api/category/**,/api/para/**,/api/pref/**,/api/sku/**,/api/spec/**,/api/spu/**,/api/stockBack/**,/api/template/**
+          filters:
+#          - PrefixPath=/brand # 设置过滤条件，当请求过来的时候，添加前缀'/brand'，例如：http://localhost:8001/1115 --> http://localhost:18081/brand/1115
+          - StripPrefix=1 # 设置过滤条件，当请求过来的时候，去掉前缀，例如：http://localhost:8001/api/brand/1115 --> http://localhost:18081/brand/1115
+          - name: RequestRateLimiter # 请求数限流 名字不能随便写 ，使用默认的facatory
+            args:
+              key-resolver: "#{@ipKeyResolver}" # 设置参考，以ip为参考，对应启动类中 @Bean(name="ipKeyResolver")
+              redis-rate-limiter.replenishRate: 1 #设置生成令牌的速率，每秒钟返回一个令牌
+              redis-rate-limiter.burstCapacity: 1 # 指定最大的请求数量（1秒内），即一秒内，针对同一个ip地址，最多只处理一个请求
+        #用户微服务，所有请求先经过网关判断登录情况
+        - id: changgou_user_route
+          uri: lb://user
+          predicates:
+            - Path=/api/user/**,/api/address/**,/api/areas/**,/api/cities/**,/api/provinces/**
+          filters:
+            - StripPrefix=1
+  #Redis配置
+  redis:
+    host: 192.168.211.132
+    port: 6379
+server:
+  port: 8001
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:7001/eureka
+  instance:
+    prefer-ip-address: true
+management:
+  endpoint:
+    gateway:
+      enabled: true
+    web:
+      exposure:
+        include: true
