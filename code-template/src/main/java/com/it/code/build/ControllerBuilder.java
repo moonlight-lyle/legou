@@ -1,4 +1,4 @@
-package com.itheima.code.build;
+package com.it.code.build;
 
 import freemarker.template.Template;
 
@@ -23,7 +23,7 @@ public class ControllerBuilder {
         BuilderFactory.builder(modelMap,
                 "/template/controller",
                 "Controller.java",
-                TemplateBuilder.PACKAGE_CONTROLLER,
+                com.it.code.build.TemplateBuilder.PACKAGE_CONTROLLER,
                 "Controller.java");
     }
 

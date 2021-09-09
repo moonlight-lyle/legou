@@ -36,4 +36,8 @@ public interface SkuFeign {
      */
     @GetMapping("/status/{status}")
     Result<List<Sku>> findByStatus(@PathVariable(name="status") String status); // 注解@PathVariable(name="status")必须要
+
+    @GetMapping("/{id}")
+    public Result<Sku> findById(@PathVariable(name="id") Long id);
+
 }

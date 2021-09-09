@@ -14,8 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 /***
  * 描述
- * @author ljh
- * @packagename com.itheima.config
+ * @author // Spring Security相关配置
+ * @packagename com.it.config
  * @version 1.0
  * @date 2020/1/10
  */
@@ -42,19 +42,19 @@ public class MyWebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    @Bean //设置认证管理器 便于我们使用 ，使用默认的认证管理器即可
+    @Bean // 设置认证管理器 便于我们使用 ，使用默认的认证管理器即可
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
 
-    //设置拦截器 设置为任意的请求都需要登录认证
+    // 设置拦截器 设置为任意的请求都需要登录认证
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                //设置用户登录的路径放行
+                // 设置用户登录的路径放行
                 .antMatchers("/user/login").permitAll()
-                //剩下所有的路径都必须进行认证的配置
+                // 剩下所有的路径都必须进行认证的配置
                 .anyRequest()
                 .authenticated()
                 .and()

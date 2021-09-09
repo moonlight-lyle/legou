@@ -1,4 +1,4 @@
-package com.itheima.code.build;
+package com.it.code.build;
 
 import java.util.Map;
 
@@ -19,7 +19,7 @@ public class FeignBuilder {
         BuilderFactory.builder(modelMap,
                 "/template/feign",
                 "Feign.java",
-                TemplateBuilder.PACKAGE_FEIGN,
+                com.it.code.build.TemplateBuilder.PACKAGE_FEIGN,
                 "Feign.java");
     }
 

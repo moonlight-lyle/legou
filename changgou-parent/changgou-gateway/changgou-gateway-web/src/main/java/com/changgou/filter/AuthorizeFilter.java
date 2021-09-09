@@ -45,14 +45,18 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
             return response.setComplete();
         }
         // 解析令牌数据
-        try {
-            Claims claims = JwtUtil.parseJWT(token);
-        } catch (Exception e) {
-            e.printStackTrace();
-            // 解析失败，响应401错误
-            response.setStatusCode(HttpStatus.UNAUTHORIZED);
-            return response.setComplete();
-        }
+//        try {
+//            Claims claims = JwtUtil.parseJWT(token);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            // 解析失败，响应401错误
+//            response.setStatusCode(HttpStatus.UNAUTHORIZED);
+//            return response.setComplete();
+//        }
+
+        // 如果有令牌信息，需要将令牌传递给下一个微服务
+        request.mutate().header(AUTHORIZE_TOKEN,"bearer "+token);
+
         // 放行
         return chain.filter(exchange);
     }

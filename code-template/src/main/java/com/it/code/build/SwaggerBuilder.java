@@ -1,4 +1,4 @@
-package com.itheima.code.build;
+package com.it.code.build;
 
 import java.util.Map;
 

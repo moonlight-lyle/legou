@@ -1,4 +1,4 @@
-package com.itheima.code.swagger;
+package com.it.code.swagger;
 
 import java.util.List;
 
@@ -34,10 +34,10 @@ public class SwaggerMethod {
     private String produces;
 
     //响应数据
-    private List<SwaggerResponse> responses;
+    private List<com.it.code.swagger.SwaggerResponse> responses;
 
     //参数设置
-    private List<SwaggerParameters> swaggerParameters;
+    private List<com.it.code.swagger.SwaggerParameters> swaggerParameters;
 
     public String getUrl() {
         return url;
@@ -103,15 +103,15 @@ public class SwaggerMethod {
         this.produces = produces;
     }
 
-    public List<SwaggerResponse> getResponses() {
+    public List<com.it.code.swagger.SwaggerResponse> getResponses() {
         return responses;
     }
 
-    public void setResponses(List<SwaggerResponse> responses) {
+    public void setResponses(List<com.it.code.swagger.SwaggerResponse> responses) {
         this.responses = responses;
     }
 
-    public List<SwaggerParameters> getSwaggerParameters() {
+    public List<com.it.code.swagger.SwaggerParameters> getSwaggerParameters() {
         return swaggerParameters;
     }
 

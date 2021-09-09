@@ -1,4 +1,4 @@
-package com.itheima.code.build;
+package com.it.code.build;
 
 import freemarker.template.Template;
 
@@ -23,7 +23,7 @@ public class DaoBuilder {
         BuilderFactory.builder(modelMap,
                 "/template/dao",
                 "Mapper.java",
-                TemplateBuilder.PACKAGE_MAPPER,
+                com.it.code.build.TemplateBuilder.PACKAGE_MAPPER,
                 "Mapper.java");
     }
 

@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /***
- * 描述
+ * 描述 读取配置文件
  * @author ljh
  * @packagename com.changgou.oauth.config
  * @version 1.0

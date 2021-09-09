@@ -1,6 +1,6 @@
 package com.it;
 
-import com.itheima.code.build.TemplateBuilder;
+import com.it.code.build.TemplateBuilder;
 
 /****
  * @Author:admin

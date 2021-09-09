@@ -1,4 +1,4 @@
-package com.itheima.code.util;
+package com.it.code.util;
 
 /****
  * @Author:admin

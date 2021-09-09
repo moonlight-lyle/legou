@@ -3,18 +3,20 @@ package com.changgou;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 import tk.mybatis.spring.annotation.MapperScan;
 
 /*****
- * @Author: www.itheima
+ * @Author: www.it
  * @Date: 2019/7/6 8:01
  * @Description: com.changgou
  ****/
 @SpringBootApplication
 @EnableEurekaClient
 @MapperScan(basePackages = "com.changgou.auth.dao")
+@EnableFeignClients(basePackages = "com.changgou.user.feign") // 开启feign
 public class OAuthApplication {
 
     public static void main(String[] args) {

@@ -9,6 +9,7 @@ import entity.Result;
 import entity.StatusCode;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -98,6 +99,7 @@ public class UserController {
         return new Result(true,StatusCode.OK,"修改成功");
     }
 
+
     /***
      * 新增User数据
      * @param user
@@ -116,7 +118,21 @@ public class UserController {
      * @return
      */
     @GetMapping("/{id}")
+    // 该方法要执行必须拥有某一个角色的选项才才能进行访问
+    @PreAuthorize(value="hasAnyAuthority('ROLE_ADMIN')")
     public Result<User> findById(@PathVariable String id){
+        //调用UserService实现根据主键查询User
+        User user = userService.findById(id);
+        return new Result<User>(true,StatusCode.OK,"查询成功",user);
+    }
+
+    /**
+     * 根据用户的名称获取用户的对象数据
+     * @param id
+     * @return
+     */
+    @GetMapping("/load/{id}")
+    public Result<User> loadById(@PathVariable(name="id") String id){
         //调用UserService实现根据主键查询User
         User user = userService.findById(id);
         return new Result<User>(true,StatusCode.OK,"查询成功",user);

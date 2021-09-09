@@ -15,6 +15,7 @@
         <module>channgou-web</module>
         <module>changgou-gateway</module>
         <module>changgou-eureka</module>
+        <module>changgou-service-order</module>
     </modules>
     <packaging>pom</packaging>
     <description>所有工程的父工程，用于统一管理版本</description>

@@ -1,4 +1,4 @@
-package com.itheima.code.build;
+package com.it.code.build;
 
 import freemarker.template.Template;
 
@@ -24,17 +24,17 @@ public class BuilderFactory {
                                 String suffix){      //生成文件后缀名字
         try {
             //获取模板对象
-            Template template = TemplateUtil.loadTemplate(ControllerBuilder.class.getResource(templatePath).getPath(), templateFile);
+            Template template = com.it.code.build.TemplateUtil.loadTemplate(com.it.code.build.ControllerBuilder.class.getResource(templatePath).getPath(), templateFile);
 
             //创建文件夹
-            String path = TemplateBuilder.PROJECT_PATH+storePath.replace(".","/");
+            String path = com.it.code.build.TemplateBuilder.PROJECT_PATH+storePath.replace(".","/");
             File file = new File(path);
             if(!file.exists()){
                 file.mkdirs();
             }
 
             //创建文件
-            TemplateUtil.writer(template,modelMap,path+"/"+modelMap.get("Table")+suffix);
+            com.it.code.build.TemplateUtil.writer(template,modelMap,path+"/"+modelMap.get("Table")+suffix);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,8 +1,9 @@
-package com.itheima.code.build;
+package com.it.code.build;
 
-import com.itheima.code.swagger.*;
-import com.itheima.code.util.*;
-import javafx.scene.control.Tab;
+import com.it.code.swagger.*;
+import com.it.code.util.JavaTypes;
+import com.it.code.util.ModelInfo;
+import com.it.code.util.StringUtils;
 
 import java.io.InputStream;
 import java.sql.*;
@@ -226,7 +227,7 @@ public class TemplateBuilder {
      * @param format
      * @return
      */
-    public static List<SwaggerPath> swaggerMethodInit(String Table,String table,String type,String format){
+    public static List<SwaggerPath> swaggerMethodInit(String Table, String table, String type, String format){
         //集合存储
         List<SwaggerPath> swaggerPaths = new ArrayList<SwaggerPath>();
 
@@ -430,7 +431,7 @@ public class TemplateBuilder {
      * @param isSearch:是否条件搜索  1：搜索  2：不搜索
      * @return
      */
-    public static List<SwaggerParameters> searchPageParameters(String Table,int isPage,int isSearch){
+    public static List<SwaggerParameters> searchPageParameters(String Table, int isPage, int isSearch){
         //集合
         List<SwaggerParameters> swaggerParametersList = new ArrayList<SwaggerParameters>();
         if(isPage==1){
