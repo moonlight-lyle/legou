@@ -1,38 +1,23 @@
 package com.changgou;
 
-import entity.IdWorker;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
-import org.springframework.amqp.core.Queue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
-import tk.mybatis.spring.annotation.MapperScan;
+import org.springframework.amqp.core.Queue;
 
-/***
- * 描述
- * @author ljh
- * @packagename com.changgou
- * @version 1.0
- * @date 2020/3/30
- */
-@SpringBootApplication
+
+@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 @EnableEurekaClient
-@MapperScan(basePackages = "com.changgou.order.dao")
-@EnableFeignClients(basePackages = {"com.changgou.goods.feign","com.changgou.user.feign"})
-public class OrderApplication {
+public class PayApplication {
     public static void main(String[] args) {
-        SpringApplication.run(OrderApplication.class,args);
-    }
-
-    @Bean
-    public IdWorker idWorker(){
-        return new IdWorker(0,0);
+        SpringApplication.run(PayApplication.class,args);
     }
 
     @Autowired
@@ -56,4 +41,5 @@ public class OrderApplication {
     public Binding createBinding(){
         return BindingBuilder.bind(queueOrder()).to(createExchange()).with(environment.getProperty("mq.pay.routing.key"));
     }
+
 }
