@@ -207,4 +207,18 @@ public class SkuServiceImpl implements SkuService {
         sku.setStatus(status);
         return skuMapper.select(sku);
     }
+
+    @Override
+    public int decCount(Long id, Integer num) {
+        //1.
+       /* Sku sku = skuMapper.selectByPrimaryKey(id);
+        if(sku.getNum()<num){//判断买的商品的数量不能超过库存数
+            return 0;
+        }
+        sku.setNum(sku.getNum()-num);
+
+        return skuMapper.updateByPrimaryKeySelective(sku);*/
+
+        return skuMapper.decCount(id,num);
+    }
 }

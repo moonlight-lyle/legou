@@ -4,13 +4,13 @@ import com.github.pagehelper.PageInfo;
 import java.util.List;
 /****
  * @Author:admin
- * @Description:UserÒµÎñ²ã½Ó¿Ú
+ * @Description:UserÒµï¿½ï¿½ï¿½Ó¿ï¿½
  * @Date 2019/6/14 0:16
  *****/
 public interface UserService {
 
     /***
-     * User¶àÌõ¼þ·ÖÒ³²éÑ¯
+     * Userï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½Ñ¯
      * @param user
      * @param page
      * @param size
@@ -19,7 +19,7 @@ public interface UserService {
     PageInfo<User> findPage(User user, int page, int size);
 
     /***
-     * User·ÖÒ³²éÑ¯
+     * Userï¿½ï¿½Ò³ï¿½ï¿½Ñ¯
      * @param page
      * @param size
      * @return
@@ -27,40 +27,42 @@ public interface UserService {
     PageInfo<User> findPage(int page, int size);
 
     /***
-     * User¶àÌõ¼þËÑË÷·½·¨
+     * Userï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
      * @param user
      * @return
      */
     List<User> findList(User user);
 
     /***
-     * É¾³ýUser
+     * É¾ï¿½ï¿½User
      * @param id
      */
     void delete(String id);
 
     /***
-     * ÐÞ¸ÄUserÊý¾Ý
+     * ï¿½Þ¸ï¿½Userï¿½ï¿½ï¿½ï¿½
      * @param user
      */
     void update(User user);
 
     /***
-     * ÐÂÔöUser
+     * ï¿½ï¿½ï¿½ï¿½User
      * @param user
      */
     void add(User user);
 
     /**
-     * ¸ù¾ÝID²éÑ¯User
+     * ï¿½ï¿½ï¿½ï¿½IDï¿½ï¿½Ñ¯User
      * @param id
      * @return
      */
      User findById(String id);
 
     /***
-     * ²éÑ¯ËùÓÐUser
+     * ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½User
      * @return
      */
     List<User> findAll();
+
+    int addPoints(String username, Integer points);
 }

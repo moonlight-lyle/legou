@@ -1,4 +1,5 @@
 package com.changgou.user.controller;
+import com.changgou.user.config.TokenDecode;
 import com.changgou.user.pojo.Address;
 import com.changgou.user.service.AddressService;
 import com.github.pagehelper.PageInfo;
@@ -122,5 +123,20 @@ public class AddressController {
         //调用AddressService实现查询所有Address
         List<Address> list = addressService.findAll();
         return new Result<List<Address>>(true, StatusCode.OK,"查询成功",list) ;
+    }
+
+    @Autowired
+    private TokenDecode tokenDecode;
+    /**
+     * 根据当前的登录的用户获取用户的地址列表
+     * @return
+     */
+    @GetMapping(value = "/user/list")
+    public Result<List<Address>> list(){
+        // 1.获取当前登录的用户的用户名
+        String username = tokenDecode.getUsername();
+        // 2.根据用户名从数据库查询出列表数据 返回
+        List<Address> addressList= addressService.list(username);
+        return new Result<>(true,StatusCode.OK,"查询地址列表成功",addressList);
     }
 }

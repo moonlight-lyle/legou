@@ -13,6 +13,8 @@ spring:
     password: 123456
   main:
     allow-bean-definition-overriding: true
+  thymeleaf:
+    cache: false # 不缓存
 eureka:
   instance:
     prefer-ip-address: true

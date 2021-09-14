@@ -4,13 +4,13 @@ import com.github.pagehelper.PageInfo;
 import java.util.List;
 /****
  * @Author:admin
- * @Description:AddressÒµÎñ²ã½Ó¿Ú
+ * @Description:AddressÒµï¿½ï¿½ï¿½Ó¿ï¿½
  * @Date 2019/6/14 0:16
  *****/
 public interface AddressService {
 
     /***
-     * Address¶àÌõ¼ş·ÖÒ³²éÑ¯
+     * Addressï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½Ñ¯
      * @param address
      * @param page
      * @param size
@@ -19,7 +19,7 @@ public interface AddressService {
     PageInfo<Address> findPage(Address address, int page, int size);
 
     /***
-     * Address·ÖÒ³²éÑ¯
+     * Addressï¿½ï¿½Ò³ï¿½ï¿½Ñ¯
      * @param page
      * @param size
      * @return
@@ -27,40 +27,42 @@ public interface AddressService {
     PageInfo<Address> findPage(int page, int size);
 
     /***
-     * Address¶àÌõ¼şËÑË÷·½·¨
+     * Addressï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
      * @param address
      * @return
      */
     List<Address> findList(Address address);
 
     /***
-     * É¾³ıAddress
+     * É¾ï¿½ï¿½Address
      * @param id
      */
     void delete(Integer id);
 
     /***
-     * ĞŞ¸ÄAddressÊı¾İ
+     * ï¿½Ş¸ï¿½Addressï¿½ï¿½ï¿½ï¿½
      * @param address
      */
     void update(Address address);
 
     /***
-     * ĞÂÔöAddress
+     * ï¿½ï¿½ï¿½ï¿½Address
      * @param address
      */
     void add(Address address);
 
     /**
-     * ¸ù¾İID²éÑ¯Address
+     * ï¿½ï¿½ï¿½ï¿½IDï¿½ï¿½Ñ¯Address
      * @param id
      * @return
      */
      Address findById(Integer id);
 
     /***
-     * ²éÑ¯ËùÓĞAddress
+     * ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½Address
      * @return
      */
     List<Address> findAll();
+
+    List<Address> list(String username);
 }

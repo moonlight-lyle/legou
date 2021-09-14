@@ -6,6 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -39,5 +40,15 @@ public interface SkuFeign {
 
     @GetMapping("/{id}")
     public Result<Sku> findById(@PathVariable(name="id") Long id);
+
+    /**
+     * 扣减库存
+     * @param id 商品的SKU的ID
+     * @param num 要扣减的数量
+     * @return
+     */
+    @GetMapping("/decCount")
+    public Result decCount(@RequestParam(name="id") Long id, @RequestParam(name="num") Integer num);
+
 
 }

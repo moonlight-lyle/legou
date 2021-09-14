@@ -1,15 +1,22 @@
 package com.changgou.order.service.impl;
 
+import com.changgou.goods.feign.SkuFeign;
+import com.changgou.order.dao.OrderItemMapper;
 import com.changgou.order.dao.OrderMapper;
 import com.changgou.order.pojo.Order;
+import com.changgou.order.pojo.OrderItem;
 import com.changgou.order.service.OrderService;
+import com.changgou.user.feign.UserFeign;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import entity.IdWorker;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.Date;
 import java.util.List;
 
 /****
@@ -208,13 +215,72 @@ public class OrderServiceImpl implements OrderService {
         orderMapper.updateByPrimaryKey(order);
     }
 
+
+    @Autowired
+    private IdWorker idWorker;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    @Autowired
+    private OrderItemMapper orderItemMapper;
+
+    @Autowired
+    private SkuFeign skuFeign;
+
+    @Autowired
+    private UserFeign userFeign;
+
     /**
      * 增加Order
      * @param order
      */
     @Override
     public void add(Order order){
-        orderMapper.insert(order);
+
+        // 1.添加订单
+        // 1.1 生成订单号 用雪花算法
+        order.setId(idWorker.nextId() + "");
+
+        //1.2 创建时间和更新时间
+        order.setCreateTime(new Date());
+        order.setUpdateTime(order.getCreateTime());
+
+        order.setBuyerRate("0"); // 未评价
+        order.setSourceType("1"); // 来源web
+
+        order.setOrderStatus("0"); // 未完成
+        order.setPayStatus("0"); // 未支付
+        order.setConsignStatus("0"); // 未发货
+        order.setIsDelete("0"); // 未删除
+
+        // 设置总金额 设置 总共数量 获取redis中的数据
+        List<OrderItem> values = redisTemplate.boundHashOps("Cart_" + order.getUsername()).values();
+        Integer totalMoney = 0;
+        Integer totalNum = 0;
+        for (OrderItem orderItem : values) {
+            // 2.添加订单选项
+            totalMoney += orderItem.getMoney();
+            totalNum += orderItem.getNum();
+            orderItem.setId(idWorker.nextId() + "");
+            orderItem.setOrderId(order.getId());
+            orderItem.setIsReturn("0");//没退
+            orderItemMapper.insertSelective(orderItem);
+            // 3.减库存 根据购买的商品的ID 和数量进行扣减
+            skuFeign.decCount(orderItem.getSkuId(),orderItem.getNum());
+        }
+        order.setPayMoney(totalMoney);
+        order.setTotalMoney(totalMoney);
+        order.setTotalNum(totalNum);
+        orderMapper.insertSelective(order);
+
+        //4.加积分
+        userFeign.addPoints(order.getUsername(),10);
+
+        //5.清除redis中的购物车
+        redisTemplate.delete("Cart_" + order.getUsername()); // 有前缀和用户名组成，删除就是删除某一个用户的了
+
+//        orderMapper.insert(order);
     }
 
     /**

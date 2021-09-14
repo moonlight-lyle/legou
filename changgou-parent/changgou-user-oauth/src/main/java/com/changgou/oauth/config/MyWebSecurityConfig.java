@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -47,19 +48,34 @@ public class MyWebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    // 在全局上容器初始化的时候，忽略某一些特定的确定的路径比如静态资源
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/css/**"
+                , "/data/**"
+                , "/fonts/**"
+                , "/img/**"
+                , "/js/**"
+                , "/oauth/login"
+                , "/user/login"
+                , "/login.html");
+    }
+
     // 设置拦截器 设置为任意的请求都需要登录认证
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
                 // 设置用户登录的路径放行
-                .antMatchers("/user/login").permitAll()
+//                .antMatchers("/user/login", "/auth/login").permitAll()
                 // 剩下所有的路径都必须进行认证的配置
                 .anyRequest()
                 .authenticated()
                 .and()
                 .formLogin()
-					.and()
+                .loginPage("/oauth/login")
+                .loginProcessingUrl("/user/login")
+                .and()
                 .httpBasic();//注意 在使用/user/login?username=zhangsan&password=itheima的时候不要带basic否则就会进入basic登录了。不再使用username的方式登录
     }
 }

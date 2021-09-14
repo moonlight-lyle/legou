@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
+
 /**
  * 全局过滤器，所有请求都会经过这个过滤器
  */
@@ -19,6 +20,7 @@ import reactor.core.publisher.Mono;
 public class AuthorizeFilter implements GlobalFilter, Ordered {
     // 令牌头名字
     private static final String AUTHORIZE_TOKEN = "Authorization";
+
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         // 获取Request、Response对象
@@ -41,8 +43,13 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
         // 如果为空，则输出错误代码
         if (StringUtils.isEmpty(token)) {
             // 设置方法不允许被访问，401错误代码
-            response.setStatusCode(HttpStatus.UNAUTHORIZED);
-            return response.setComplete();
+//            response.setStatusCode(HttpStatus.UNAUTHORIZED);
+//            return response.setComplete();
+            //没有令牌  说明无权限 不是直接返回 而是要重定向到登录的页面http://localhost:9001/oauth/login
+            String loginurl = "http://localhost:9001/oauth/login?From=" + request.getURI().toString();
+            response.getHeaders().set("Location", loginurl);
+            response.setStatusCode(HttpStatus.SEE_OTHER);
+            return response.setComplete();//请求完成
         }
         // 解析令牌数据
 //        try {
@@ -55,11 +62,12 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
 //        }
 
         // 如果有令牌信息，需要将令牌传递给下一个微服务
-        request.mutate().header(AUTHORIZE_TOKEN,"bearer "+token);
+        request.mutate().header(AUTHORIZE_TOKEN, "bearer " + token);
 
         // 放行
         return chain.filter(exchange);
     }
+
     /**
      * 过滤器顺序
      *

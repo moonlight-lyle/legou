@@ -134,4 +134,15 @@ public class SkuController {
         List<Sku> list =skuService.findByStatus(status);
         return new Result<List<Sku>>(true, StatusCode.OK,"查询成功",list) ;
     }
+
+    @GetMapping("/decCount")
+    public Result decCount(@RequestParam(name="id") Long id, @RequestParam(name="num") Integer num){
+        //update tb_sku set num=num=#{num} where id=#{id} and num>=#{num}
+        int count= skuService.decCount(id,num);
+        if(count>0){
+            return new Result(true,StatusCode.OK,"扣减成功");
+        }else{
+            return new Result(false,StatusCode.ERROR,"扣减失败");
+        }
+    }
 }

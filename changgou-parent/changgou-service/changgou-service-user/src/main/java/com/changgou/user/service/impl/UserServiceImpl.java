@@ -11,7 +11,7 @@ import tk.mybatis.mapper.entity.Example;
 import java.util.List;
 /****
  * @Author:admin
- * @Description:UserÒµÎñ²ã½Ó¿ÚÊµÏÖÀà
+ * @Description:UserÒµï¿½ï¿½ï¿½Ó¿ï¿½Êµï¿½ï¿½ï¿½ï¿½
  * @Date 2019/6/14 0:16
  *****/
 @Service
@@ -22,52 +22,52 @@ public class UserServiceImpl implements UserService {
 
 
     /**
-     * UserÌõ¼þ+·ÖÒ³²éÑ¯
-     * @param user ²éÑ¯Ìõ¼þ
-     * @param page Ò³Âë
-     * @param size Ò³´óÐ¡
-     * @return ·ÖÒ³½á¹û
+     * Userï¿½ï¿½ï¿½ï¿½+ï¿½ï¿½Ò³ï¿½ï¿½Ñ¯
+     * @param user ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½
+     * @param page Ò³ï¿½ï¿½
+     * @param size Ò³ï¿½ï¿½Ð¡
+     * @return ï¿½ï¿½Ò³ï¿½ï¿½ï¿½
      */
     @Override
     public PageInfo<User> findPage(User user, int page, int size){
-        //·ÖÒ³
+        //ï¿½ï¿½Ò³
         PageHelper.startPage(page,size);
-        //ËÑË÷Ìõ¼þ¹¹½¨
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         Example example = createExample(user);
-        //Ö´ÐÐËÑË÷
+        //Ö´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         return new PageInfo<User>(userMapper.selectByExample(example));
     }
 
     /**
-     * User·ÖÒ³²éÑ¯
+     * Userï¿½ï¿½Ò³ï¿½ï¿½Ñ¯
      * @param page
      * @param size
      * @return
      */
     @Override
     public PageInfo<User> findPage(int page, int size){
-        //¾²Ì¬·ÖÒ³
+        //ï¿½ï¿½Ì¬ï¿½ï¿½Ò³
         PageHelper.startPage(page,size);
-        //·ÖÒ³²éÑ¯
+        //ï¿½ï¿½Ò³ï¿½ï¿½Ñ¯
         return new PageInfo<User>(userMapper.selectAll());
     }
 
     /**
-     * UserÌõ¼þ²éÑ¯
+     * Userï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¯
      * @param user
      * @return
      */
     @Override
     public List<User> findList(User user){
-        //¹¹½¨²éÑ¯Ìõ¼þ
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½
         Example example = createExample(user);
-        //¸ù¾Ý¹¹½¨µÄÌõ¼þ²éÑ¯Êý¾Ý
+        //ï¿½ï¿½ï¿½Ý¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½
         return userMapper.selectByExample(example);
     }
 
 
     /**
-     * User¹¹½¨²éÑ¯¶ÔÏó
+     * Userï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½
      * @param user
      * @return
      */
@@ -75,83 +75,83 @@ public class UserServiceImpl implements UserService {
         Example example=new Example(User.class);
         Example.Criteria criteria = example.createCriteria();
         if(user!=null){
-            // ÓÃ»§Ãû
+            // ï¿½Ã»ï¿½ï¿½ï¿½
             if(!StringUtils.isEmpty(user.getUsername())){
                     criteria.andLike("username","%"+user.getUsername()+"%");
             }
-            // ÃÜÂë£¬¼ÓÃÜ´æ´¢
+            // ï¿½ï¿½ï¿½ë£¬ï¿½ï¿½ï¿½Ü´æ´¢
             if(!StringUtils.isEmpty(user.getPassword())){
                     criteria.andEqualTo("password",user.getPassword());
             }
-            // ×¢²áÊÖ»úºÅ
+            // ×¢ï¿½ï¿½ï¿½Ö»ï¿½ï¿½ï¿½
             if(!StringUtils.isEmpty(user.getPhone())){
                     criteria.andEqualTo("phone",user.getPhone());
             }
-            // ×¢²áÓÊÏä
+            // ×¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             if(!StringUtils.isEmpty(user.getEmail())){
                     criteria.andEqualTo("email",user.getEmail());
             }
-            // ´´½¨Ê±¼ä
+            // ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
             if(!StringUtils.isEmpty(user.getCreated())){
                     criteria.andEqualTo("created",user.getCreated());
             }
-            // ÐÞ¸ÄÊ±¼ä
+            // ï¿½Þ¸ï¿½Ê±ï¿½ï¿½
             if(!StringUtils.isEmpty(user.getUpdated())){
                     criteria.andEqualTo("updated",user.getUpdated());
             }
-            // »áÔ±À´Ô´£º1:PC£¬2£ºH5£¬3£ºAndroid£¬4£ºIOS
+            // ï¿½ï¿½Ô±ï¿½ï¿½Ô´ï¿½ï¿½1:PCï¿½ï¿½2ï¿½ï¿½H5ï¿½ï¿½3ï¿½ï¿½Androidï¿½ï¿½4ï¿½ï¿½IOS
             if(!StringUtils.isEmpty(user.getSourceType())){
                     criteria.andEqualTo("sourceType",user.getSourceType());
             }
-            // êÇ³Æ
+            // ï¿½Ç³ï¿½
             if(!StringUtils.isEmpty(user.getNickName())){
                     criteria.andEqualTo("nickName",user.getNickName());
             }
-            // ÕæÊµÐÕÃû
+            // ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½
             if(!StringUtils.isEmpty(user.getName())){
                     criteria.andLike("name","%"+user.getName()+"%");
             }
-            // Ê¹ÓÃ×´Ì¬£¨1Õý³£ 0·ÇÕý³££©
+            // Ê¹ï¿½ï¿½×´Ì¬ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½ 0ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             if(!StringUtils.isEmpty(user.getStatus())){
                     criteria.andEqualTo("status",user.getStatus());
             }
-            // Í·ÏñµØÖ·
+            // Í·ï¿½ï¿½ï¿½Ö·
             if(!StringUtils.isEmpty(user.getHeadPic())){
                     criteria.andEqualTo("headPic",user.getHeadPic());
             }
-            // QQºÅÂë
+            // QQï¿½ï¿½ï¿½ï¿½
             if(!StringUtils.isEmpty(user.getQq())){
                     criteria.andEqualTo("qq",user.getQq());
             }
-            // ÊÖ»úÊÇ·ñÑéÖ¤ £¨0·ñ  1ÊÇ£©
+            // ï¿½Ö»ï¿½ï¿½Ç·ï¿½ï¿½ï¿½Ö¤ ï¿½ï¿½0ï¿½ï¿½  1ï¿½Ç£ï¿½
             if(!StringUtils.isEmpty(user.getIsMobileCheck())){
                     criteria.andEqualTo("isMobileCheck",user.getIsMobileCheck());
             }
-            // ÓÊÏäÊÇ·ñ¼ì²â£¨0·ñ  1ÊÇ£©
+            // ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½â£¨0ï¿½ï¿½  1ï¿½Ç£ï¿½
             if(!StringUtils.isEmpty(user.getIsEmailCheck())){
                     criteria.andEqualTo("isEmailCheck",user.getIsEmailCheck());
             }
-            // ÐÔ±ð£¬1ÄÐ£¬0Å®
+            // ï¿½Ô±ï¿½1ï¿½Ð£ï¿½0Å®
             if(!StringUtils.isEmpty(user.getSex())){
                     criteria.andEqualTo("sex",user.getSex());
             }
-            // »áÔ±µÈ¼¶
+            // ï¿½ï¿½Ô±ï¿½È¼ï¿½
             if(!StringUtils.isEmpty(user.getUserLevel())){
                     criteria.andEqualTo("userLevel",user.getUserLevel());
             }
-            // »ý·Ö
+            // ï¿½ï¿½ï¿½ï¿½
             if(!StringUtils.isEmpty(user.getPoints())){
                     criteria.andEqualTo("points",user.getPoints());
             }
-            // ¾­ÑéÖµ
+            // ï¿½ï¿½ï¿½ï¿½Öµ
             if(!StringUtils.isEmpty(user.getExperienceValue())){
                     criteria.andEqualTo("experienceValue",user.getExperienceValue());
             }
-            // ³öÉúÄêÔÂÈÕ
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             if(!StringUtils.isEmpty(user.getBirthday())){
                     criteria.andEqualTo("birthday",user.getBirthday());
             }
-            // ×îºóµÇÂ¼Ê±¼ä
+            // ï¿½ï¿½ï¿½ï¿½Â¼Ê±ï¿½ï¿½
             if(!StringUtils.isEmpty(user.getLastLoginTime())){
                     criteria.andEqualTo("lastLoginTime",user.getLastLoginTime());
             }
@@ -160,7 +160,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * É¾³ý
+     * É¾ï¿½ï¿½
      * @param id
      */
     @Override
@@ -169,7 +169,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * ÐÞ¸ÄUser
+     * ï¿½Þ¸ï¿½User
      * @param user
      */
     @Override
@@ -178,7 +178,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Ôö¼ÓUser
+     * ï¿½ï¿½ï¿½ï¿½User
      * @param user
      */
     @Override
@@ -187,7 +187,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * ¸ù¾ÝID²éÑ¯User
+     * ï¿½ï¿½ï¿½ï¿½IDï¿½ï¿½Ñ¯User
      * @param id
      * @return
      */
@@ -197,11 +197,16 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * ²éÑ¯UserÈ«²¿Êý¾Ý
+     * ï¿½ï¿½Ñ¯UserÈ«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
      * @return
      */
     @Override
     public List<User> findAll() {
         return userMapper.selectAll();
+    }
+
+    @Override
+    public int addPoints(String username, Integer points) {
+        return userMapper.addPoints(username,points);
     }
 }

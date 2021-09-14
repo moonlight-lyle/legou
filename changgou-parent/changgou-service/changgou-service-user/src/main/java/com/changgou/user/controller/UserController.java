@@ -181,4 +181,26 @@ public class UserController {
         return  new Result(true,StatusCode.OK,"登录成功！",jwt);
 
     }
+
+    /**
+     * 添加积分
+     * @param username
+     * @param points
+     * @return
+     */
+    @GetMapping("/points/add")
+    public Result addPoints(@RequestParam(name="username") String username,
+                            @RequestParam(name="points") Integer points){
+        int count= userService.addPoints(username,points);
+        if(count>0){
+            return new Result(true,StatusCode.OK,"更新积分成功");
+        }else{
+            return new Result(false,StatusCode.ERROR,"更新积分失败");
+        }
+    }
+
+  /*  public static void main(String[] args) {
+        String encode = new BCryptPasswordEncoder().encode("123456");
+        System.out.println(encode);
+    }*/
 }

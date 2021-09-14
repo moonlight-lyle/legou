@@ -65,4 +65,6 @@ public interface SkuService {
     List<Sku> findAll();
 
     List<Sku> findByStatus(String status);
+
+    int decCount(Long id, Integer num);
 }

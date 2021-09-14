@@ -164,4 +164,16 @@ public class AddressServiceImpl implements AddressService {
     public List<Address> findAll() {
         return addressMapper.selectAll();
     }
+
+    @Override
+    public List<Address> list(String username) {
+        // select * from tb_address where username = ?
+        Address condition = new Address();
+        condition.setUsername(username);
+       /* Example ex = new Example(Address.class)
+                ex.orderBy("is_defalt").desc();
+        addressMapper.selectByExample();*/
+
+        return addressMapper.select(condition);
+    }
 }
