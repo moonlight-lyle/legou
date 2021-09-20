@@ -236,7 +236,7 @@ public class OrderServiceImpl implements OrderService {
      * @param order
      */
     @Override
-    public void add(Order order){
+    public Order add(Order order){
 
         // 1.添加订单
         // 1.1 生成订单号 用雪花算法
@@ -281,6 +281,7 @@ public class OrderServiceImpl implements OrderService {
         redisTemplate.delete("Cart_" + order.getUsername()); // 有前缀和用户名组成，删除就是删除某一个用户的了
 
 //        orderMapper.insert(order);
+        return order;
     }
 
     /**

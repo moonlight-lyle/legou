@@ -150,6 +150,8 @@ public class SeckillOrderController {
         String username="zhangsan";
         //直接从redis中获取该用户名的状态信息返回
         SeckillStatus seckillStatus = seckillOrderService.queryStatus(username);
+        seckillStatus.setFrom("2");//秒杀的
+        //设置一个from的值给前端，前端携带参数发送给支付页面
         return new Result<SeckillStatus>(true,StatusCode.OK,"查询状态成功",seckillStatus);
     }
 }

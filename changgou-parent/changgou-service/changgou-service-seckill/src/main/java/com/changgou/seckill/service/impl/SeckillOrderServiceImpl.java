@@ -2,6 +2,7 @@ package com.changgou.seckill.service.impl;
 
 import com.changgou.seckill.dao.SeckillGoodsMapper;
 import com.changgou.seckill.dao.SeckillOrderMapper;
+import com.changgou.seckill.pojo.SeckillGoods;
 import com.changgou.seckill.pojo.SeckillOrder;
 import com.changgou.seckill.pojo.SeckillStatus;
 import com.changgou.seckill.service.SeckillOrderService;
@@ -10,6 +11,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import entity.IdWorker;
 import entity.SystemConstants;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,7 @@ import tk.mybatis.mapper.entity.Example;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /****
  * @Author:admin
@@ -199,8 +203,32 @@ public class SeckillOrderServiceImpl implements SeckillOrderService {
     @Autowired
     private MultiThreadingCreateOrder multiThreadingCreateOrder;
 
+    @Autowired
+    private RedissonClient redissonClient;
+
     @Override
     public boolean add(Long id, String time, String username) {
+
+        // Redis队列防止重复排队  进来一个+1 再判断
+        Long increment = redisTemplate.boundHashOps(SystemConstants.SEC_KILL_QUEUE_REPEAT_KEY).increment(username, 1);
+        if(increment>1){
+            throw new RuntimeException("你重复排队了");
+        }
+
+        //加锁
+        RLock mylock = redissonClient.getLock("Mylock");
+        try {
+            mylock.lock(20, TimeUnit.SECONDS);
+            dercount(time,id); // 已经减库存了
+        } catch (Exception e) {
+            e.printStackTrace();
+            // 报错返回
+            return false;
+        }finally {
+            //释放锁
+            mylock.unlock();
+        }
+
         // 1.先将用户放到排队对列中redis队里  left          status:1 标识排队中
         SeckillStatus seckillStatus = new SeckillStatus(username, new Date(), 1, id, time);
         redisTemplate.boundListOps(SystemConstants.SEC_KILL_USER_QUEUE_KEY).leftPush(seckillStatus);
@@ -238,5 +266,17 @@ public class SeckillOrderServiceImpl implements SeckillOrderService {
     @Override
     public SeckillStatus queryStatus(String username) {
         return (SeckillStatus) redisTemplate.boundHashOps(SystemConstants.SEC_KILL_USER_STATUS_KEY).get(username);
+    }
+
+    //判断是否有库存和减少库存
+    private void dercount(String time,Long id){
+        SeckillGoods seckillGoods = (SeckillGoods) redisTemplate.boundHashOps(SystemConstants.SEC_KILL_GOODS_PREFIX + time).get(id);
+        // 2.判断商品是否存在 或者库存是否已经为0  如果是商品没有，或者商品库存为0 说明已经售罄
+        if (seckillGoods == null || seckillGoods.getStockCount() <= 0) {
+            throw new RuntimeException("卖完了");
+        }
+        //3.减库存
+        seckillGoods.setStockCount(seckillGoods.getStockCount() - 1);
+        redisTemplate.boundHashOps(SystemConstants.SEC_KILL_GOODS_PREFIX + time).put(id, seckillGoods);
     }
 }

@@ -2,6 +2,7 @@ package com.changgou.order.controller;
 
 import com.changgou.order.config.TokenDecode;
 import com.changgou.order.pojo.Order;
+import com.changgou.order.pojo.OrderVo;
 import com.changgou.order.service.OrderService;
 import com.github.pagehelper.PageInfo;
 import entity.Result;
@@ -104,8 +105,12 @@ public class OrderController {
         //1.获取当前的登录的用户名
         order.setUsername(tokenDecode.getUsername());
         //2.添加到数据库表，完成进一步的业务
-        orderService.add(order);
-        return new Result(true,StatusCode.OK,"添加成功");
+        Order orderreturn = orderService.add(order);
+        OrderVo orderVo = new OrderVo();
+        orderVo.setFrom("1");//获取数据1
+        orderVo.setId(orderreturn.getId());//订单号
+        orderVo.setTotalMoney(orderreturn.getTotalMoney());//金额
+        return new Result(true,StatusCode.OK,"添加成功",orderVo);
     }
 
     /***

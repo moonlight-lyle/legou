@@ -13,6 +13,7 @@ import java.util.Date;
 public class SeckillStatus implements Serializable {
     //秒杀用户名
     private String username;
+    private String from;
     //创建时间
     private Date createTime;
     //秒杀状态  1:排队中，2:秒杀等待支付,3:支付超时，4:秒杀失败,5:支付完成
@@ -37,6 +38,14 @@ public class SeckillStatus implements Serializable {
         this.status = status;
         this.goodsId = goodsId;
         this.time = time;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
     }
 
     public String getUsername() {

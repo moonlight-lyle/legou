@@ -44,8 +44,11 @@ public class MultiThreadingCreateOrder {
             String username = seckillStatus.getUsername();
             String time = seckillStatus.getTime();
             Long id = seckillStatus.getGoodsId();
+
             // 1.获取商品的数据
             SeckillGoods seckillGoods = (SeckillGoods) redisTemplate.boundHashOps(SystemConstants.SEC_KILL_GOODS_PREFIX + time).get(id);
+            /**
+             * 以下2、 3步骤是需要进行加锁和释放锁的代码段，放在SeckillOrderServiceImpl里面去加锁和释放锁
             // 2.判断商品是否存在 或者库存是否已经为0  如果是商品没有，或者商品库存为0 说明已经售罄
             if (seckillGoods == null || seckillGoods.getStockCount() <= 0) {
                 throw new RuntimeException("卖完了");
@@ -53,6 +56,9 @@ public class MultiThreadingCreateOrder {
             // 3.减库存
             seckillGoods.setStockCount(seckillGoods.getStockCount() - 1);
             redisTemplate.boundHashOps(SystemConstants.SEC_KILL_GOODS_PREFIX + time).put(id, seckillGoods);
+             */
+
+
             //4.再判断库存是为0  如果为0 更新到数据库中
             if (seckillGoods.getStockCount() <= 0) {
                 seckillGoodsMapper.updateByPrimaryKeySelective(seckillGoods);//库存设置为了0
